@@ -25,21 +25,32 @@ Resources:
           Type: Api
           Properties:
             Path: /subscribe
-            Method: get
+            Method: post
 
   SubscriptionsTable:
     Type: AWS::DynamoDB::Table
     Properties: 
-      TableName: subscriptions
+      TableName: subscriptions-table
       AttributeDefinitions:
-        - AttributeName: id
+        - AttributeName: email
           AttributeType: S
       KeySchema:
-        - AttributeName: id
+        - AttributeName: email
           KeyType: HASH
       ProvisionedThroughput:
         ReadCapacityUnits: 1
         WriteCapacityUnits: 1
+
+  SubscriptionsWebsite:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: 'segc-subscriptions-website'
+      PublicAccessBlockConfiguration:
+          BlockPublicAcls: False
+          BlockPublicPolicy: False
+          IgnorePublicAcls: False
+          RestrictPublicBuckets: False
+
 
 Outputs:
   SubscribeUserApi:

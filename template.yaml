@@ -1,0 +1,36 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+
+Description: >
+  aws_subscription_project
+
+Globals:
+  Function:
+    Timeout: 3
+
+Resources:
+  SubscribeUserFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: subscribe_user/
+      Handler: app.lambda_handler
+      Runtime: python3.8
+      Architectures: 
+        - x86_64
+      Events:
+        SubscribeUser:
+          Type: Api
+          Properties:
+            Path: /subscribe
+            Method: get
+
+Outputs:
+  SubscribeUserApi:
+    Description: "API Gateway URL for SubscribeUser"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/subscribe"
+  SubscribeUserFunction:
+    Description: "Function ARN for SubscribeUser"
+    Value: !GetAtt SubscribeUserFunction.Arn
+  SubscribeUserFunctionIamRole:
+    Description: "IAM Role ARN for SubscribeUser"
+    Value: !GetAtt SubscribeUserFunctionRole.Arn

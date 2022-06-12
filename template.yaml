@@ -15,6 +15,9 @@ Resources:
       CodeUri: subscribe_user/
       Handler: app.lambda_handler
       Runtime: python3.8
+      Policies: 
+        - DynamoDBCrudPolicy:
+            TableName: !Ref SubscriptionsTable
       Architectures: 
         - x86_64
       Events:
@@ -23,6 +26,20 @@ Resources:
           Properties:
             Path: /subscribe
             Method: get
+
+  SubscriptionsTable:
+    Type: AWS::DynamoDB::Table
+    Properties: 
+      TableName: subscriptions
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
 
 Outputs:
   SubscribeUserApi:

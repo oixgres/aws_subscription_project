@@ -17,7 +17,7 @@ Resources:
       Runtime: python3.8
       Policies: 
         - DynamoDBCrudPolicy:
-            TableName: !Ref SubscriptionsTable
+            TableName: !Ref Subscriptions
       Architectures: 
         - x86_64
       Events:
@@ -25,12 +25,12 @@ Resources:
           Type: Api
           Properties:
             Path: /subscribe
-            Method: post
+            Method: get
 
-  SubscriptionsTable:
+  Subscriptions:
     Type: AWS::DynamoDB::Table
     Properties: 
-      TableName: subscriptions-table
+      TableName: subscriptions
       AttributeDefinitions:
         - AttributeName: email
           AttributeType: S
@@ -55,7 +55,7 @@ Resources:
 Outputs:
   SubscribeUserApi:
     Description: "API Gateway URL for SubscribeUser"
-    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/subscribe"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/subscribe/"
   SubscribeUserFunction:
     Description: "Function ARN for SubscribeUser"
     Value: !GetAtt SubscribeUserFunction.Arn
